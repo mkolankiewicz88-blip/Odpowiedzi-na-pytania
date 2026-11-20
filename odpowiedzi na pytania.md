@@ -1,0 +1,15 @@
+Odpowiedzi na pytania rekrutacyjne
+1. Do czego można wykorzystać Ansible?
+Ansible służy do automatyzacji powtarzalnych zadań administracyjnych na wielu serwerach. W pliku inwentarza (inventory) określa się hosty i ich grupy, a w playbooku zapisuje się zadania do wykonania. W przypadku serwerów linuksowych Ansible zwykle łączy się z nimi przez SSH.
+Na grupie serwerów WWW playbook może zainstalować pakiet Nginx, wygenerować plik konfiguracyjny z szablonu oraz zadbać o to, by usługa działała i uruchamiała się przy starcie systemu. Gdy plik konfiguracji się zmieni, handler może przeładować usługę po sprawdzeniu konfiguracji poleceniem nginx -t.
+Ansible może też zarządzać dostępem SSH. Przykładowo playbook tworzy konto deploy na wybranych hostach i dodaje jego klucz publiczny do pliku authorized_keys. Przy rotacji klucza można dodać nowy klucz publiczny, sprawdzić logowanie i usunąć poprzedni klucz.
+2. Czym się różnią terraform plan i terraform apply?
+terraform plan porównuje konfigurację z bieżącym stanem zarządzanych zasobów i pokazuje, co trzeba utworzyć, zmienić, usunąć lub zastąpić. Na tym etapie infrastruktura pozostaje bez zmian. Przegląd planu pozwala zauważyć na przykład, że zmiana parametru spowoduje wymianę maszyny wirtualnej.
+terraform apply wprowadza zaplanowane zmiany. Uruchomione bez pliku planu tworzy nowy plan i domyślnie prosi o potwierdzenie. Żeby wykonać dokładnie te operacje, które zostały sprawdzone, zapisuję plan przez terraform plan -out=tfplan, przeglądam go poleceniem terraform show tfplan, a następnie uruchamiam terraform apply tfplan. Podanie pliku zastępuje potwierdzenie interaktywne.
+3. Co oznacza idempotentność playbooka?
+Idempotentny playbook doprowadza host do stanu opisanego w zadaniach. Po jego osiągnięciu kolejne uruchomienia z tymi samymi parametrami utrzymują ten stan. Przy niezmienionej konfiguracji hosta w podsumowaniu kolejnego uruchomienia zwykle pojawia się changed=0.
+Przykładowo moduł ansible.builtin.file z ustawieniami state: directory i mode: "0755" utworzy brakujący katalog lub skoryguje jego uprawnienia. Jeśli katalog ma już oczekiwane uprawnienia, moduł pozostawi go bez zmian. Tę samą zasadę można zastosować we własnym skrypcie, sprawdzając, czy linia jest już w pliku, zanim się ją dopisze.
+4. Jak sprawdzić wolne miejsce na dysku w Linuksie?
+Zaczynam od df -h. Polecenie pokazuje zajęte i dostępne miejsce w zamontowanych systemach plików, a opcja -h podaje rozmiary w czytelnych jednostkach, np. M i G. W wyniku Avail oznacza dostępne miejsce, Use% pokazuje procent wykorzystania, a Mounted on wskazuje punkt montowania.
+df -h /var pokazuje dane systemu plików, na którym leży /var. Jeśli /var znajduje się na tym samym systemie plików co /, wynik dotyczy systemu zamontowanego pod /. Żeby ustalić, które podkatalogi /var zajmują najwięcej miejsca na tym systemie plików, używam du -x -h --max-depth=1 /var | sort -h. Gdy mimo wolnego miejsca nie da się tworzyć plików, df -i /var pozwala sprawdzić, czy wyczerpały się i-węzły.
+Dokumentacja  Ansible  •  Terraform plan  •  Terraform apply  •  GNU Coreutils (df i du)
