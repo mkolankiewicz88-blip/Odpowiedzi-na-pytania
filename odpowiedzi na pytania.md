@@ -12,4 +12,3 @@ Przykładowo moduł ansible.builtin.file z ustawieniami state: directory i mode:
 4. Jak sprawdzić wolne miejsce na dysku w Linuksie?
 Zaczynam od df -h. Polecenie pokazuje zajęte i dostępne miejsce w zamontowanych systemach plików, a opcja -h podaje rozmiary w czytelnych jednostkach, np. M i G. W wyniku Avail oznacza dostępne miejsce, Use% pokazuje procent wykorzystania, a Mounted on wskazuje punkt montowania.
 df -h /var pokazuje dane systemu plików, na którym leży /var. Jeśli /var znajduje się na tym samym systemie plików co /, wynik dotyczy systemu zamontowanego pod /. Żeby ustalić, które podkatalogi /var zajmują najwięcej miejsca na tym systemie plików, używam du -x -h --max-depth=1 /var | sort -h. Gdy mimo wolnego miejsca nie da się tworzyć plików, df -i /var pozwala sprawdzić, czy wyczerpały się i-węzły.
-Dokumentacja  Ansible  •  Terraform plan  •  Terraform apply  •  GNU Coreutils (df i du)
