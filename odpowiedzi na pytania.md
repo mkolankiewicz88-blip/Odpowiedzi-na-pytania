@@ -1,4 +1,4 @@
-Odpowiedzi na pytania rekrutacyjne
+Odpowiedzi na pytania:
 1. Do czego można wykorzystać Ansible?
 Ansible służy do automatyzacji powtarzalnych zadań administracyjnych na wielu serwerach. W pliku inwentarza (inventory) określa się hosty i ich grupy, a w playbooku zapisuje się zadania do wykonania. W przypadku serwerów linuksowych Ansible zwykle łączy się z nimi przez SSH.
 Na grupie serwerów WWW playbook może zainstalować pakiet Nginx, wygenerować plik konfiguracyjny z szablonu oraz zadbać o to, by usługa działała i uruchamiała się przy starcie systemu. Gdy plik konfiguracji się zmieni, handler może przeładować usługę po sprawdzeniu konfiguracji poleceniem nginx -t.
